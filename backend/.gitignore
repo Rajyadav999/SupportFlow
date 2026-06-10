@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Database
+crm.db
+*.db
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing cache
+.pytest_cache/
+.mypy_cache/
+.coverage
