@@ -26,19 +26,16 @@ Traditional ticketing systems are either too basic (offering no tracking) or ove
 ## 📸 Screenshots & Demo
 
 ### Customer Portal (Landing page & Form)
-![Customer Form](screenshots/landing.png)
 *A high-fidelity landing page displaying support metrics, testimonials, and the public ticket submission form.*
 
 ### Agent Dashboard
-![Agent Dashboard](screenshots/dashboard.png)
 *The centralized agent console featuring ticket metrics, search inputs, pills filters, sorting, and paginated records.*
 
 ### Ticket Detail & Operations
-![Ticket Detail](screenshots/detail.png)
 *The operational console for updating ticket state, reviewing client description, and appending progress notes onto the activity log.*
 
 *   **Live Demo:** `https://supportflow.vercel.app` *(Placeholder)*
-*   **Walkthrough Video:** `https://youtube.com/watch?v=placeholder` *(Placeholder)*
+*   **Walkthrough Video:** `https://drive.google.com/file/d/1tF18JDvoxga_O105UgFjJeGnHVXFcz10/view?usp=drive_link*
 
 ---
 
@@ -496,6 +493,6 @@ Distributed under the MIT License. See standard licensing files for details.
 ## 🧑‍💻 Author
 
 **Your Name**
-* LinkedIn: [your-linkedin-profile](https://linkedin.com/in/yourprofile) *(Placeholder)*
-* GitHub: [@yourgithubusername](https://github.com/yourgithubusername) *(Placeholder)*
+* LinkedIn: https://www.linkedin.com/in/raj-yadav-706b60397/
+* GitHub: https://github.com/yraj-17
 
