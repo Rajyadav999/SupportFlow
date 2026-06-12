@@ -23,7 +23,7 @@ Traditional ticketing systems are either too basic (offering no tracking) or ove
 
 ---
 
-## 📸 Screenshots & Demo
+##  Demo
 
 ### Customer Portal (Landing page & Form)
 *A high-fidelity landing page displaying support metrics, testimonials, and the public ticket submission form.*
@@ -59,14 +59,6 @@ Traditional ticketing systems are either too basic (offering no tracking) or ove
 
 ## 📐 Project Architecture
 
-The application is structured as a decoupled Single Page Application (SPA) communicating via RESTful JSON APIs. 
-
-### Core System Flows
-1. **Authentication Flow:** Security is handled via database-backed sessions. When an agent logs in, a 32-byte session token is generated in the database. The client stores it in `localStorage` and appends it to all subsequent requests via an Axios interceptor.
-2. **Axios Interceptor:** Automatically injects the token into `Authorization: Bearer <token>`. Additionally, a response interceptor captures any `401 Unauthorized` responses from the backend, clears local storage, updates user state, and immediately routes the agent to the login page.
-3. **Database Integrity:** Foreign keys tie ticket logs (`notes` table) to tickets (`tickets` table) and session logs (`user_sessions` table) to agents (`users` table) with cascade deletes.
-
-```mermaid
 graph TD
     subgraph Client [Frontend React App]
         Landing[Landing & Create Ticket]
