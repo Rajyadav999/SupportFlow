@@ -1,122 +1,96 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
+import { RefreshCw } from 'lucide-react'
 
-function App() {
-  const [count, setCount] = useState(0)
+import Home from './pages/Home'
+import CreateTicket from './pages/CreateTicket'
+import TicketDetail from './pages/TicketDetail'
+import NotFound from './pages/NotFound'
+import Landing from './pages/Landing'
+import Login from './pages/Login'
+import SignUp from './pages/SignUp'
+import VerifyOtp from './pages/VerifyOtp'
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+import MainLayout from './layouts/MainLayout'
+import { DarkModeProvider } from './context/DarkModeContext'
+import { AuthProvider, useAuth } from './context/AuthContext'
+
+// Route Guard for authenticated paths
+function PrivateRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <RefreshCw className="animate-spin text-brand-500" size={28} />
+          <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Loading Session...</span>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </div>
+    )
+  }
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+  return isAuthenticated ? children : <Navigate to="/login" replace />
 }
 
-export default App
+// Route Guard for auth/public page paths (guest only)
+function PublicRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <RefreshCw className="animate-spin text-brand-500" size={28} />
+          <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Loading Session...</span>
+        </div>
+      </div>
+    )
+  }
+
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : children
+}
+
+export default function App() {
+  return (
+    <DarkModeProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: { 
+                fontSize: '14px', 
+                borderRadius: '12px',
+                background: '#1f2937',
+                color: '#ffffff'
+              }
+            }}
+          />
+          <MainLayout>
+            <Routes>
+              {/* Public SaaS Landing Page */}
+              <Route path="/" element={<Landing />} />
+
+              {/* Public/Guest Authentication Routes */}
+              <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+              <Route path="/signup" element={<PublicRoute><SignUp /></PublicRoute>} />
+              <Route path="/verify-otp" element={<PublicRoute><VerifyOtp /></PublicRoute>} />
+
+              {/* Public Support Submission Route */}
+              <Route path="/tickets/new" element={<CreateTicket />} />
+
+              {/* Protected Internal Agent Routes */}
+              <Route path="/dashboard" element={<PrivateRoute><Home /></PrivateRoute>} />
+              <Route path="/tickets/:ticketId" element={<PrivateRoute><TicketDetail /></PrivateRoute>} />
+
+              {/* Fallback 404 Route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </MainLayout>
+        </AuthProvider>
+      </BrowserRouter>
+    </DarkModeProvider>
+  )
+}
